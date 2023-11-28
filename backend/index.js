@@ -43,6 +43,24 @@ app.listen(PORT, () => {
     console.log(`App is listning to: ${PORT}`)
 })
 
+//define route for handling http GET request to the /books endpoint
+app.get('/books', async (request, response) => {
+    try {   
+        // retrieve all books from database using the book model 
+        const books = await Book.find({});
+        
+        // if the database query is successful, respond with a JSON Object containing the book data
+        return response.status(200).json({
+            count: books.length, //show number of books retrieved 
+            data: books // array of books object 
+        });
+    } catch (error) {
+        console.log(error.message);
+        response.status(500).send({ message: error.message });
+    }
+});
+
+
 mongoose
     .connect(mongoDBURL)
     .then(()=> {
