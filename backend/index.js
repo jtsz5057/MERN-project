@@ -1,4 +1,4 @@
-import express, { request } from "express";
+import express, { request, response } from "express";
 import { PORT, mongoDBURL } from "./config.js"
 import mongoose from "mongoose";
 import { Book } from "./models/bookModel.js"
@@ -78,6 +78,42 @@ app.get('/books/:id', async (request, response) => {
     }
 });
 
+//define route for updating a book with specific ID using the HTTP put request 
+app.put('/book/:id', async (request, reponse) => {
+    try {
+
+        // Check if the required fields (title, author, publishYear) are provided in the request body
+        if (
+            !request.body.title ||
+            !request.body.author ||
+            !request.body.publishYear
+        ) {
+            // If any required field is missing, send a 400 Bad Request response with an error message
+            return response.status(400).send({
+                message: 'Send all required fields: title, author, publishYear',
+            })
+        }
+
+        // Extract the book ID from the request parameters
+        const { id } = request.params;
+
+        // Use Mongoose's findByIdAndUpdate to update the book with the specified ID with the data from the request body
+        const result = await Book.findByIdAndUpdate(id, request.body);
+
+        // If the book with the specified ID is not found, send a 404 Not Found response with an error message
+        if (!result) {
+            return response.status(404).json({ message: 'Book not found'});
+        }
+
+        // If the update is successful, send a 200 OK response with a success message
+        return response.status(200).send({ message: 'Book updated successfully'})
+
+    } catch (error) {
+        // If any error occurs during the process, log the error message and send a 500 Internal Server Error response with an error message
+        console.log(error.message);
+        response.status(500).send({ message: error.message })
+    }
+});
 
 
 mongoose
