@@ -11,7 +11,7 @@ app.get('/', (request, response) => {
     return response.status(234).send('Welcome to my jonathan page')
 });
 
-// Route for Save a new book
+// Define route for Saving a new book
 app.post('/books', async (requets, response) => {
     try {
         if (
@@ -114,6 +114,25 @@ app.put('/book/:id', async (request, reponse) => {
         response.status(500).send({ message: error.message })
     }
 });
+
+//define route for deleting a book
+app.delete('/books/:id', async (request, response) => {
+    try {
+        const { id } = request.params;
+
+        const result = await.Book.findByIdAndDelete(id);
+
+        if (!result) {
+            return response.status(404).json({ message: 'Book not found' });
+        }
+
+        return response.status(200).send({ message: 'Book deleted successfully'})
+
+    } catch (error) {
+        console.log(error.message);
+        response.status(500).send({ message: error.message });
+    }
+})
 
 
 mongoose
