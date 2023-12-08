@@ -7,17 +7,29 @@ import { BsInfoCircle } from 'react-icons/bs';
 import { MdOutlineAddBox, MdOutlineDelete } from 'react-icons/md'
 
 const Home = () => {
+  // State variables for managing books data and loading state
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  // useEffect hook to fetch data when the component mounts
   useEffect(() => {
+
+    // Set loading to true before making the API call
+    setLoading(true);
+
+    // Axios GET request to fetch books data from the specified URL
     axios
       .get('http://localhost:5555/books')
       .then((response) => {
+         // Update the books state with the data received from the API
         setBooks(response.data.data);
+        // Set loading to false after successfully fetching data
         setLoading(false);
       })
       .catch((error) => {
+        // Log any errors that occur during the API call
         console.log(error);
+        // Set loading to false in case of an error
         setLoading(false);
       })
   }, [])

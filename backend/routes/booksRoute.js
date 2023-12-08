@@ -4,7 +4,7 @@ import { Book } from '../models/bookModel.js';
 const router = express.Router();
 
 // Define route for Saving a new book
-router.post('/', async (requets, response) => {
+router.post('/', async (request, response) => {
     try {
         if (
             !request.body.title ||
