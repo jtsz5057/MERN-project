@@ -5,20 +5,33 @@ import BackButton from '../components/BackButton';
 import Spinner from '../components/Spinner';
 
 export const ShowBook = () => {
+
+  // State variables to manage book data and loading status
   const [book, setBook] = useState({});
   const [loading, setLoading] = useState(false);
+
+   // Extracting 'id' parameter from the route using useParams hook
   const { id } = useParams();
 
+  // useEffect hook to fetch book details when the component mounts
   useEffect(() => {
+
+    // Setting loading state to true before making the API request
     setLoading(true);
+
+    // Fetching book details from the server using axios
     axios
       .get(`http://localhost:5555/books/${id}`)
       .then((response) => {
+        // Updating book state with the fetched data
         setBook(response.data);
+        // Setting loading state to false after successful data retrieval
         setLoading(false)
       })
       .catch((error) => {
+        // Logging any errors that occur during the API request
         console.log(error);
+        // Setting loading state to false in case of an error
         setLoading(false);
       })
 
