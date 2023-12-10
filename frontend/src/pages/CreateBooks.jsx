@@ -5,25 +5,37 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 export const CreateBooks = () => {
+  // State variables to manage form inputs and loading state
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [publishYear, setPublishYear] = useState('');
   const [loading, setLoading] = useState('');
+
+  // React Router hook for navigation
   const navigate = useNavigate();
+
+  // Function to handle saving a new book
   const handleSaveBook = () => {
+    // Prepare data object with the current state values
     const data = {
       title,
       author,
       publishYear,
     };
+
+    // Set loading to true to show a loading spinner
     setLoading(true);
+
+    // Make a POST request to the backend API to create a new book
     axios
       .post('http://localhost:5555/books', data)
       .then(() => {
+        // On success, set loading to false, and navigate back to the main page
         setLoading(false);
         navigate('/');
       })
       .catch((error) => {
+        // On error, set loading to false, show an alert, and log the error to the console
         setLoading(false);
         alert('An error happened. Please check console');
         console.log(error);
