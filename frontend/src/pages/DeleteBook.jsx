@@ -5,16 +5,27 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const DeleteBook = () => {
+  // State variable to manage loading state
   const [loading, setLoading] = useState(false);
+
+  // React Router hooks for navigation and accessing URL parameters
   const navigate = useNavigate();
   const { id } = useParams();
+
+  // Function to handle deleting a book
   const handleDeleteBook = () => {
+     // Set loading to true to show a loading spinner
     setLoading(true);
+
+    // Make a DELETE request to the backend API to delete the specified book
     axios
       .delete(`http://localhost:5555/books/${id}`)
       .then(() => {
+        // On success, set loading to false, navigate back to the main page,
+        // and provide a console log indicating a successful deletion
         setLoading(false);
         navigate('/');
+        // Note: This alert seems misplaced and may cause issues.
         alert('An error happened. Please check console')
         console.log(error);
       })
