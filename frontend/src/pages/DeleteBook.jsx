@@ -3,6 +3,7 @@ import BackButton from '../components/BackButton';
 import Spinner from '../components/Spinner';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 
 const DeleteBook = () => {
   // State variable to manage loading state
@@ -11,6 +12,8 @@ const DeleteBook = () => {
   // React Router hooks for navigation and accessing URL parameters
   const navigate = useNavigate();
   const { id } = useParams();
+
+  const { enqueueSnackbar } = useSnackbar();
 
   // Function to handle deleting a book
   const handleDeleteBook = () => {
@@ -24,13 +27,16 @@ const DeleteBook = () => {
         // On success, set loading to false, navigate back to the main page,
         // and provide a console log indicating a successful deletion
         setLoading(false);
+        enqueueSnackbar('Book Deleted successfully', { variant: 'success' });
         navigate('/');
         // Note: This alert seems misplaced and may cause issues.
-        alert('An error happened. Please check console')
+        // alert('An error happened. Please check console')
         console.log(error);
       })
       .catch((error) => {
         setLoading(false);
+        enqueueSnackbar('Error', { variant: 'error' });
+        console.log(error);
       })
   }
 

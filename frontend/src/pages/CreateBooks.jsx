@@ -3,6 +3,7 @@ import BackButton from '../components/BackButton';
 import Spinner from '../components/Spinner';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 
 export const CreateBooks = () => {
   // State variables to manage form inputs and loading state
@@ -13,6 +14,9 @@ export const CreateBooks = () => {
 
   // React Router hook for navigation
   const navigate = useNavigate();
+
+  // Function to display snack notifications
+  const { enqueueSnackbar } = useSnackbar();
 
   // Function to handle saving a new book
   const handleSaveBook = () => {
@@ -32,12 +36,14 @@ export const CreateBooks = () => {
       .then(() => {
         // On success, set loading to false, and navigate back to the main page
         setLoading(false);
+        enqueueSnackbar('Book created successfully', { variant: 'success' });
         navigate('/');
       })
       .catch((error) => {
         // On error, set loading to false, show an alert, and log the error to the console
         setLoading(false);
         alert('An error happened. Please check console');
+        enqueueSnackbar('Error', { variant: 'error' });
         console.log(error);
       })
   }

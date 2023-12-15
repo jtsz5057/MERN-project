@@ -3,6 +3,7 @@ import BackButton from '../components/BackButton';
 import Spinner from '../components/Spinner';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 
 export const EditBooks = () => {
   // State variables to manage form inputs and loading state
@@ -13,6 +14,8 @@ export const EditBooks = () => {
 
   // React Router hook for navigation
   const navigate = useNavigate();
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const {id} = useParams();
 
@@ -50,12 +53,14 @@ export const EditBooks = () => {
       .then(() => {
         // On success, set loading to false, and navigate back to the main page
         setLoading(false);
+        enqueueSnackbar('Book Edited successfully', { variant: 'success' });
         navigate('/');
       })
       .catch((error) => {
         // On error, set loading to false, show an alert, and log the error to the console
         setLoading(false);
-        alert('An error happened. Please check console');
+        // alert('An error happened. Please check console');
+        enqueueSnackbar('Error', { variant: 'error' });
         console.log(error);
       })
   }
